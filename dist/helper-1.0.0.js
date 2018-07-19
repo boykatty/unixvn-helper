@@ -3,7 +3,6 @@
  * Copyright (c) 2018 Tuong Do Van(boykatty) and contributors
  * Email: dotuong91@gmail.com
  * Released under the MIT license
- *
  * Date: 2018-07-19
  */
 
