@@ -47,7 +47,7 @@
         }
         if ($result.substr(0, 1) == $separator)
             $result = $result.substring(1, $result.length);
-        return $result;
+        return ($result.length > 0) ? $result : "0";
     }
 
     $.fn.unixvnPriceFormat = function ($options) {//price format from input text
@@ -55,7 +55,7 @@
         var $separator = $options.separator;
         var $this = this;
 
-        $this.val(formatPrice($this.val(), $separator));
+        $this.val(formatPrice(toNumber($this.val()), $separator));
 
         $this.keyup(function ($e) {
             var $key = isUndefined($e.key) ? 0 : $e.key;
