@@ -3,6 +3,7 @@
  * Copyright (c) 2018 Tuong Do Van(boykatty) and contributors
  * Email: dotuong91@gmail.com
  * Released under the MIT license
+ *
  * Date: 2018-07-19
  */
 
@@ -34,36 +35,41 @@
         return $formatted;
     }
 
+    function formatPrice($in, $separator) {
+        var $result = "";
+        var $thousandsCount = 0;
+        for (var i = $in.length; i > 0; i--) {
+            var $char = $in.substr(i - 1, 1);
+            $thousandsCount++;
+            if ($thousandsCount % 3 == 0)
+                $char = $separator + $char;
+            $result = $char + $result;
+        }
+        if ($result.substr(0, 1) == $separator)
+            $result = $result.substring(1, $result.length);
+        return $result;
+    }
+
     $.fn.unixvnPriceFormat = function ($options) {//price format from input text
         var $options = $.extend(true, {}, $.fn.unixvnPriceFormat.defaults, $options);
         var $separator = $options.separator;
         var $this = this;
 
+        $this.val(formatPrice($this.val(), $separator));
+
         $this.keyup(function ($e) {
             var $key = isUndefined($e.key) ? 0 : $e.key;
             var $val = $(this).val();
-            var $check = false;
             var $newVal = toNumber($val + $key);
-            var $result = "";
-            var $thousandsCount = 0;
 
             if ($newVal != "") {
-                for (var i = $newVal.length; i > 0; i--) {
-                    var $char = $newVal.substr(i - 1, 1);
-                    $thousandsCount++;
-                    if ($thousandsCount % 3 == 0)
-                        $char = $separator + $char;
-                    $result = $char + $result;
-                }
-                if ($result.substr(0, 1) == $separator)
-                    $result = $result.substring(1, $result.length);
-                $this.val($result);
+                $this.val(formatPrice($newVal, $separator));
             } else {
                 $this.val(0);
             }
         }).keydown(function ($e) {
             var $code = $e.keyCode ? $e.keyCode : $e.which;
-            if ($code !== 8) {//check key backspace 
+            if ($code !== 8 && $code !== 9) {//check key backspace 
                 $e.preventDefault();
                 $e.stopPropagation();
                 return false;
